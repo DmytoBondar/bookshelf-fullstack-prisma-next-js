@@ -11,6 +11,10 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.get('/', (req, res) => {
+    res.send('Hello World!')
+})
+
 app.use((req: Request, res: Response, next: NextFunction) => {
     res.status(httpStatus.NOT_FOUND).json({
         success: false,
@@ -24,9 +28,5 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     });
     next();
 });
-
-app.get('/', (req, res ) => {
-    console.log("Hellow World")
-})
 
 export default app;
