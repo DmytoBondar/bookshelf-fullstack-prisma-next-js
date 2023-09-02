@@ -1,10 +1,16 @@
 import express from 'express';
 import { UserController } from './users.controller';
+import auth from '../../middlewares/auth';
+import { AUTHUSER } from '../../../enum/user';
 
 const router = express.Router();
 
 router.get('/:id', UserController.getSingleUser);
-router.get('/', UserController.getAllUsers);
+router.get('/',
+    auth(
+        AUTHUSER.ADMIN
+        ),
+    UserController.getAllUsers);
 router.post('/signup', UserController.createUser);
 router.patch('/:id', UserController.updateSingleUser);
 router.delete('/:id', UserController.deleteSingleUser);
