@@ -1,0 +1,1 @@
+# bookshelf-fullstack-prisma-next-js
