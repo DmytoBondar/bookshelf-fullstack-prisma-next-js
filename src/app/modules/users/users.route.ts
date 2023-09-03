@@ -5,15 +5,11 @@ import { AUTHUSER } from '../../../enum/user';
 
 const router = express.Router();
 
-router.get('/:id', UserController.getSingleUser);
-router.get('/',
-    auth(
-        AUTHUSER.ADMIN
-        ),
-    UserController.getAllUsers);
+router.get('/:id', auth(AUTHUSER.ADMIN), UserController.getSingleUser);
+router.get('/', auth(AUTHUSER.ADMIN), UserController.getAllUsers);
 router.post('/signup', UserController.createUser);
-router.patch('/:id', UserController.updateSingleUser);
-router.delete('/:id', UserController.deleteSingleUser);
+router.patch('/:id', auth(AUTHUSER.ADMIN), UserController.updateSingleUser);
+router.delete('/:id', auth(AUTHUSER.ADMIN), UserController.deleteSingleUser);
 router.post('/signin', UserController.UserSignIn);
 router.post('/refresh-token', UserController.refreshToken);
 
