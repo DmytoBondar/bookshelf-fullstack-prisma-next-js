@@ -28,7 +28,7 @@ function bootstarp() {
             process.exit(1);
         };
         const unexpectedHandler = () => {
-            console.log("Handler");
+            console.log("Handler Error");
             exitHandler();
         };
         process.on('uncaughtException', unexpectedHandler);
