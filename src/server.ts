@@ -17,7 +17,7 @@ async function bootstarp() {
     }
 
     const unexpectedHandler = () => {
-        console.log("Handler");
+        console.log("Handler Error");
         exitHandler();
     };
 
