@@ -1,11 +1,11 @@
-import { User } from "@prisma/client";
+import { User, UserRole } from "@prisma/client";
 import prisma from "../../../shared/prisma";
 import bcrypt from 'bcrypt';
 import ApiError from "../../../errors/apiError";
 import httpStatus from "http-status";
 import { JWTHelpers } from "../../../helpers/jwtHelpers";
 import config from "../../../config";
-import { Secret } from "jsonwebtoken";
+import { JwtPayload, Secret } from "jsonwebtoken";
 import { ILogin, ILoginResponse } from "./users.interface";
 
 const loginUser = async (payload: ILogin): Promise<ILoginResponse> => {
@@ -80,7 +80,25 @@ const createUser = async (payload: User): Promise<User> => {
     return result;
 }
 
-const getAllUsers = async (): Promise<User[] | null> => {
+const getAllUsers = async (user:JwtPayload): Promise<User[] | null | User> => {
+    const isUserExist = await prisma.user.findFirst({
+        where: {
+            email: user.email
+        }
+    })
+    if(!isUserExist){
+        throw new ApiError(httpStatus.NOT_FOUND, 'Use is not Exist');
+    };
+
+    if(isUserExist && isUserExist.role === UserRole.customer){
+        const result = await prisma.user.findUnique({
+            where:{
+                id: isUserExist.id
+            }
+        });
+        return result
+    }
+
     const result = await prisma.user.findMany()
     return result;
 }

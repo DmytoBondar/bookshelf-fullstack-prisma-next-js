@@ -6,7 +6,9 @@ import { AUTHUSER } from '../../../enum/user';
 const router = express.Router();
 
 router.get('/:id', auth(AUTHUSER.ADMIN), UserController.getSingleUser);
-router.get('/', auth(AUTHUSER.ADMIN), UserController.getAllUsers);
+router.get('/', 
+auth(AUTHUSER.ADMIN, AUTHUSER.CUSTOMER), 
+UserController.getAllUsers);
 router.post('/signup', UserController.createUser);
 router.patch('/:id', auth(AUTHUSER.ADMIN), UserController.updateSingleUser);
 router.delete('/:id', auth(AUTHUSER.ADMIN), UserController.deleteSingleUser);
