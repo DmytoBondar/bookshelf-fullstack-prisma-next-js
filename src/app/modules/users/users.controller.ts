@@ -21,17 +21,17 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
 const UserSignIn = catchAsync(async (req: Request, res: Response) => {
     const result = await UserService.loginUser(req.body);
     const {refreshToken, ...others} = result;
-    
+    const {accessToken} = others
     const cookieOptions = {
         secure: config.env === 'production',
         httpOnly: true
     }
     res.cookie('refreshToken', refreshToken, cookieOptions)
-    sendResponse<ILoginResponse>(res, {
+    sendResponse(res, {
         statusCode: httpStatus.OK,
         message: "User Login Successfully !!",
         success: true,
-        data: others
+        token: accessToken
     })
 })
 
@@ -39,6 +39,7 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
     const {refreshToken} = req.cookies;
     const result = await UserService.refreshToken(refreshToken);
     const {refreshToken: reTken, ...others} = result;
+    const {accessToken} = others
     const cookieOptions = {
         secure: config.env === 'production',
         httpOnly: true
@@ -48,7 +49,7 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
         statusCode: httpStatus.OK,
         message: "User Login Successfully !!",
         success: true,
-        data: others
+        token: accessToken
     })
 })
 
