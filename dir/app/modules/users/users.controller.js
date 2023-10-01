@@ -41,6 +41,7 @@ const createUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
 const UserSignIn = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield users_service_1.UserService.loginUser(req.body);
     const { refreshToken } = result, others = __rest(result, ["refreshToken"]);
+    const { accessToken } = others;
     const cookieOptions = {
         secure: config_1.default.env === 'production',
         httpOnly: true
@@ -50,13 +51,14 @@ const UserSignIn = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
         statusCode: http_status_1.default.OK,
         message: "User Login Successfully !!",
         success: true,
-        data: others
+        token: accessToken
     });
 }));
 const refreshToken = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { refreshToken } = req.cookies;
     const result = yield users_service_1.UserService.refreshToken(refreshToken);
     const { refreshToken: reTken } = result, others = __rest(result, ["refreshToken"]);
+    const { accessToken } = others;
     const cookieOptions = {
         secure: config_1.default.env === 'production',
         httpOnly: true
@@ -66,7 +68,7 @@ const refreshToken = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, v
         statusCode: http_status_1.default.OK,
         message: "User Login Successfully !!",
         success: true,
-        data: others
+        token: accessToken
     });
 }));
 const getSingleUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
