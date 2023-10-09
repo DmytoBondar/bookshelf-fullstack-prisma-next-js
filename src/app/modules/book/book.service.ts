@@ -25,6 +25,15 @@ const getSingleBooks = async (id: string): Promise<Book | null> => {
     return result
 }
 
+const getBooksByCategory = async (id: string): Promise<Book[] | null> => {
+    const result = await prisma.book.findMany({
+        where: {
+            categoryId: id
+        }
+    })
+    return result;
+}
+
 const deleteBook = async (id: string): Promise<Book | null> => {
     const result = await prisma.book.delete({
         where: {
@@ -49,5 +58,6 @@ export const BookService = {
     getAllBooks,
     getSingleBooks,
     deleteBook,
-    updateBook
+    updateBook,
+    getBooksByCategory
 }

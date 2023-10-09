@@ -5,11 +5,13 @@ import httpStatus from "http-status";
 import { Order } from "@prisma/client";
 import { OrderService } from "./order.service";
 import { JwtPayload } from "jsonwebtoken";
+import { IAuthUserProps } from "../../../interface/commin";
 
 const createOrder =
     catchAsync(async (req: Request, res: Response) => {
-        const result = await OrderService.createOrder(req.body);
-        sendResponse<Order>(res, {
+        const { userId } = req.user as IAuthUserProps;
+        const result = await OrderService.createOrder(userId, req.body);
+        sendResponse(res, {
             statusCode: httpStatus.OK,
             message: 'Order Created Successfully',
             success: true,

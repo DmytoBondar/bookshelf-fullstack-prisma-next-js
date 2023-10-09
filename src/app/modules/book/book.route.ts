@@ -5,10 +5,11 @@ import { AUTHUSER } from '../../../enum/user';
 
 const router = express.Router();
 
-router.patch('/:id',auth(AUTHUSER.ADMIN), BookController.updateBook);
-router.post('/create-book',auth(AUTHUSER.ADMIN), BookController.createBook);
+router.patch('/:id', auth(AUTHUSER.ADMIN), BookController.updateBook);
+router.post('/create-book', auth(AUTHUSER.ADMIN), BookController.createBook);
+router.get('/:categoryId/category', BookController.getBooksByCategory);
 router.get('/:id', BookController.getSingleBook);
 router.get('/', BookController.getAllBook);
-router.delete('/:id',auth(AUTHUSER.ADMIN), BookController.deleteBook);
+router.delete('/:id', auth(AUTHUSER.ADMIN), BookController.deleteBook);
 
 export const BookRouter = router;

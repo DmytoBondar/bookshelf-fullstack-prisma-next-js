@@ -3,15 +3,21 @@ import prisma from "../../../shared/prisma"
 import ApiError from "../../../errors/apiError";
 import httpStatus from "http-status";
 import { JwtPayload } from "jsonwebtoken";
-import { JsonValue } from "@prisma/client/runtime/library";
 
-interface IPayload {
+type IPayload = {
     userId: string;
-    orderBooks: string;
+    orderBooks: BookObjProps[];
     status: OrderStatus
 }
+type BookObjProps = {
+    bookId: string;
+    quantity: number
+}
 
-const createOrder = async (payload: IPayload): Promise<Order> => {
+const createOrder = async (userId: string, payload: IPayload): Promise<Order> => {
+    if (userId) {
+        payload.userId = userId
+    }
     const result = await prisma.order.create({
         data: payload
     })
@@ -19,7 +25,6 @@ const createOrder = async (payload: IPayload): Promise<Order> => {
 };
 
 const getAllOrder = async (user: JwtPayload): Promise<Order[] | null> => {
-
     const isUserExist = await prisma.user.findFirst({
         where: {
             email: user.email

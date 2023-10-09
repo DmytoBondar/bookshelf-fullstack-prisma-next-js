@@ -6,3 +6,11 @@ export type IGenericResponse<T> = {
     };
     data: T;
 };
+
+export type IAuthUserProps = {
+    userId: string;
+    email: string;
+    role: string;
+    iat: number;
+    exp: number;
+}
